@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <main class="page-shell">
+    <section class="checkout-frame reveal">
+      <form id="payment-form" class="payment-form">
+        <h1 class="sr-only">Payment form</h1>
+
+        <label class="field">
+          <span>Name on card</span>
+          <input id="card-name" class="shadcn-input" name="cardName" type="text" autocomplete="cc-name"
+            placeholder="Caulbaugh Andrew" required>
+        </label>
+
+        <label class="field">
+          <span>Card number</span>
+          <input id="card-number" class="shadcn-input" name="cardNumber" type="text" inputmode="numeric"
+            autocomplete="cc-number" maxlength="19" placeholder="4084 0840 8408 4081" required>
+        </label>
+
+        <div class="field-grid field-grid--two">
+          <label class="field">
+            <span>Expiry date</span>
+            <input id="expiry" class="shadcn-input" name="expiry" type="text" inputmode="numeric"
+              autocomplete="cc-exp" maxlength="5" placeholder="04/28">
+          </label>
+
+          <label class="field">
+            <span>CVV</span>
+            <input id="cvv" class="shadcn-input" name="cvv" type="password" inputmode="numeric"
+              autocomplete="cc-csc" maxlength="4" placeholder="123">
+          </label>
+        </div>
+
+        <button id="pay-button" class="primary-action" type="submit">Pay</button>
+        <p id="form-status" class="form-status" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/config.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

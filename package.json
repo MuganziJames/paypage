@@ -1,0 +1,7 @@
+{
+  "name": "paypage",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  }
+}
