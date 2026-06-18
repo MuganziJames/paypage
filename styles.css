@@ -1,27 +1,20 @@
 :root {
-  --page: #ffffff;
-  --page-soft: #f7f9fc;
+  --page: #f4f7f8;
   --panel: #ffffff;
-  --panel-line: #e4eaf1;
   --line: #d7dee8;
   --text: #0f172a;
   --muted: #667085;
-  --accent: #159a67;
-  --accent-deep: #11784f;
-  --accent-soft: #e8f8f0;
-  --shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
-  --radius-xl: 28px;
-  --radius-lg: 20px;
-  --radius-md: 16px;
-  --radius-sm: 14px;
+  --accent: #0070ba; /* PayPal Blue */
+  --accent-deep: #003087;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --radius-xl: 20px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
 }
 
 * {
   box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
 }
 
 body {
@@ -30,105 +23,572 @@ body {
   font-family: "Manrope", "Segoe UI", sans-serif;
   color: var(--text);
   background: var(--page);
+  transition: background 0.3s;
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at top, rgba(21, 154, 103, 0.06), transparent 28%),
-    linear-gradient(180deg, #ffffff 0%, #fbfcfd 55%, #ffffff 100%);
+body.paypal-active {
+  background: #ffffff;
 }
 
-.page-shell {
+/* =========================================
+   INVOICE VIEW
+   ========================================= */
+#invoice-view {
   position: relative;
-  width: 100%;
-  max-width: 520px;
-  margin: 0 auto;
-  padding: 52px 20px 88px;
+  max-width: 100%;
+  min-height: 100vh;
 }
 
-.checkout-frame {
+.invoice-top-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 220px;
+  background: #488aff;
+  z-index: 0;
+}
+
+.invoice-content {
   position: relative;
   z-index: 1;
-  padding: 28px;
-  border: 1px solid var(--panel-line);
-  border-radius: var(--radius-xl);
-  background: var(--panel);
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.invoice-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  color: white;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.header-text {
+  text-align: center;
+}
+
+.shop-name-small {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.shop-url {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.shop-banner {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  color: white;
+  gap: 16px;
+}
+
+.shop-logo img {
+  border-radius: 12px;
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  background: white;
   box-shadow: var(--shadow);
-  padding-top: 30px;
 }
 
-.payment-form {
+.shop-details h2 {
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.shop-details p {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.invoice-card {
+  background: white;
+  margin: 20px;
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+.invoice-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.invoice-icon-wrap {
+  width: 48px;
+  height: 48px;
+  background: #f0f7ff;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.invoice-ids {
+  flex: 1;
+}
+
+.invoice-number {
+  font-weight: 700;
+  font-size: 16px;
+  color: #1a56db;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.download-icon {
+  color: #1a56db;
+  font-size: 14px;
+}
+
+.invoice-date {
+  font-size: 14px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.invoice-amount-wrap {
+  background: #f8fafc;
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.amount-label {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.amount-value {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.payment-modes-card {
+  background: white;
+  margin: 20px;
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+.pm-title {
+  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.pm-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pm-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.pm-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.pm-item:hover {
+  opacity: 0.8;
+}
+
+.pm-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pm-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+}
+
+.pm-icon-wrap.bg-blue {
+  background: #008CFF;
+  border-color: #008CFF;
+}
+
+.pm-name {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.pm-arrow {
+  color: var(--muted);
+  font-size: 24px;
+}
+
+.invoice-footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.invoice-footer p {
+  margin: 4px 0;
+}
+
+.zoho-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #0056b3;
+}
+
+.zoho-logo svg {
+  margin-right: 2px;
+}
+
+.invoice-footer a {
+  color: #0056b3;
+  text-decoration: none;
+}
+
+/* =========================================
+   PAYPAL VIEW
+   ========================================= */
+#paypal-view {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.paypal-container {
+  display: flex;
+  gap: 60px;
+  justify-content: center;
+}
+
+.paypal-left {
+  flex: 1;
+  max-width: 440px;
+}
+
+.paypal-right {
+  flex: 1;
+  max-width: 320px;
+  text-align: center;
+  padding-top: 60px;
+}
+
+@media (max-width: 768px) {
+  .paypal-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .paypal-right {
+    display: none;
+  }
+}
+
+.paypal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.paypal-cart {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.paypal-lang {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #0070ba;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  cursor: pointer;
+}
+
+.paypal-login-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.paypal-login-btn {
+  background: #0070ba;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.paypal-login-btn:hover {
+  background: #003087;
+}
+
+.paypal-divider {
+  text-align: center;
+  position: relative;
+  margin: 32px 0;
+}
+
+.paypal-divider::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: #e4eaf1;
+  z-index: 0;
+}
+
+.paypal-divider span {
+  position: relative;
+  z-index: 1;
+  background: white;
+  padding: 0 16px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.paypal-form-header h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.paypal-form-header p {
+  margin: 0 0 24px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.paypal-form {
   display: grid;
-  gap: 18px;
+  gap: 16px;
 }
 
-.field,
 .field-grid {
   display: grid;
-  gap: 10px;
+  gap: 16px;
 }
 
 .field-grid--two {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.field span {
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
 .shadcn-input {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
-  padding: 15px 16px;
+  padding: 16px;
   background: #ffffff;
   color: var(--text);
   font: inherit;
-  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  font-size: 15px;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
 }
 
 .shadcn-input::placeholder {
-  color: #98a2b3;
+  color: #666;
 }
 
 .shadcn-input:focus {
   outline: none;
-  border-color: rgba(21, 154, 103, 0.55);
-  box-shadow: 0 0 0 4px rgba(21, 154, 103, 0.12);
-  transform: translateY(-1px);
+  border-color: #0070ba;
+  box-shadow: 0 0 0 1px #0070ba;
+}
+
+.country-select-wrap {
+  position: relative;
+}
+
+.country-label-small {
+  position: absolute;
+  top: 6px;
+  left: 16px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.country-select {
+  padding-top: 24px;
+  padding-bottom: 8px;
+  appearance: none;
+  cursor: pointer;
+}
+
+.card-brands {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: -4px 0 4px;
+  padding: 8px;
+  background: #f7f9fc;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+}
+
+.card-field-wrap {
+  position: relative;
+}
+
+.cvv-field {
+  position: relative;
+}
+
+.cvv-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.billing-heading {
+  margin: 16px 0 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.billing-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.billing-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.billing-row.align-start {
+  align-items: flex-start;
+}
+
+.billing-row > label {
+  width: 110px;
+  text-align: right;
+  font-size: 13px;
+  color: #333;
+  flex-shrink: 0;
+}
+
+.billing-row input,
+.billing-row select {
+  flex: 1;
+}
+
+.input-stack {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 8px;
+}
+
+.hint-text {
+  font-size: 11px;
+  color: #666;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.autocomplete-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: var(--shadow);
+  margin-top: 4px;
+}
+
+.autocomplete-item {
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.autocomplete-item:last-child {
+  border-bottom: none;
+}
+
+.autocomplete-item:hover {
+  background: #f7f9fc;
 }
 
 .primary-action {
   border: 0;
-  border-radius: 16px;
-  padding: 17px 22px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+  border-radius: 24px;
+  padding: 16px 24px;
+  background: #0070ba;
   color: #ffffff;
   font: inherit;
-  font-weight: 800;
+  font-weight: 700;
+  font-size: 16px;
   cursor: pointer;
-  box-shadow: 0 18px 30px rgba(21, 154, 103, 0.22);
-  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+  margin-top: 16px;
+  transition: background 180ms ease;
 }
 
-.primary-action:hover,
-.primary-action:focus-visible {
-  outline: none;
-  transform: translateY(-2px);
-  box-shadow: 0 24px 36px rgba(21, 154, 103, 0.28);
-  filter: saturate(1.06);
+.primary-action:hover {
+  background: #003087;
 }
 
 .primary-action:disabled {
+  opacity: 0.7;
   cursor: not-allowed;
-  opacity: 0.72;
-  transform: none;
-  box-shadow: 0 12px 24px rgba(21, 154, 103, 0.18);
 }
 
 .form-status {
@@ -136,14 +596,29 @@ body::before {
   margin: 0;
   color: var(--muted);
   font-size: 0.9rem;
+  text-align: center;
 }
-
 .form-status.is-error {
-  color: #b42318;
+  color: #d12e2e;
 }
 
-.form-status.is-success {
-  color: var(--accent-deep);
+.paypal-shield {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.paypal-right h3 {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 16px;
+  color: #333;
+}
+
+.paypal-right p {
+  color: var(--muted);
+  line-height: 1.5;
+  font-size: 14px;
 }
 
 .sr-only {
@@ -161,32 +636,10 @@ body::before {
 .reveal {
   opacity: 0;
   transform: translateY(18px);
-  animation: rise-in 700ms ease forwards;
+  animation: rise-in 400ms ease forwards;
 }
 
 @keyframes rise-in {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (max-width: 640px) {
-  .page-shell {
-    padding: 28px 14px 44px;
-  }
-
-  .checkout-frame {
-    padding: 22px 18px;
-    border-radius: 22px;
-  }
-
-  .field-grid--two {
-    grid-template-columns: 1fr;
-  }
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
 }
