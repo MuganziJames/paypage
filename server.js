@@ -15,7 +15,11 @@ const contentTypes = {
 
 const server = http.createServer((request, response) => {
   const requestUrl = new URL(request.url, `http://${request.headers.host}`);
-  const pathname = requestUrl.pathname === "/" ? "/index.html" : requestUrl.pathname;
+  let pathname = requestUrl.pathname === "/" ? "/index.html" : requestUrl.pathname;
+
+  if (pathname === "/favicon.ico" || pathname === "/favicon.png") {
+    pathname = "/companylogo.png";
+  }
 
   if (pathname === "/config.js") {
     const body = `window.APP_CONFIG = ${JSON.stringify({
