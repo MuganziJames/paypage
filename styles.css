@@ -601,6 +601,9 @@ body.paypal-active {
 .form-status.is-error {
   color: #d12e2e;
 }
+.form-status.is-success {
+  color: #10b981; /* Emerald green */
+}
 
 .paypal-shield {
   display: flex;
